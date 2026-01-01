@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The First Law of Complexodynamics: A Blog Review - Rithwik Nukala</title>
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #f9fafb;
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background-color: #0f62fe;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+        }
+
+        nav a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cfd8ff;
+        }
+
+        /* Article */
+        article {
+            background: white;
+            padding: 3rem 2.5rem;
+            margin: 2rem auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0f62fe;
+            margin-bottom: 0.5rem;
+            font-size: 2.3rem;
+            line-height: 1.3;
+        }
+
+        .meta {
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #eef3ff;
+        }
+
+        h2 {
+            color: #0f62fe;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #0843b3;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.7rem;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #0f62fe;
+            font-weight: 600;
+        }
+
+        em {
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Math */
+        .MathJax {
+            font-size: 1.15em !important;
+        }
+
+        /* Definition box */
+        .definition {
+            background-color: #f0f7ff;
+            border-left: 4px solid #0f62fe;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 6px;
+        }
+
+        .definition-title {
+            color: #0f62fe;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Quote/blockquote */
+        blockquote {
+            background-color: #f9fafb;
+            border-left: 4px solid #0f62fe;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        /* Figure */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Back to blog link */
+        .back-link {
+            display: inline-block;
+            color: #0f62fe;
+            margin-top: 2rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #0843b3;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f62fe;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #cfd8ff;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">Rithwik Nukala</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <article>
+            <h1>The First Law of Complexodynamics: A Blog Review</h1>
+            <div class="meta">December 31st, 2025 • Math and Computer Science</div>
+            
+            <h2>Introduction</h2>
+            <p>This is a review of the blog by Scott Aaronson titled <em>The First Law of Complexodynamics</em>. The goal of this review is to help us understand why "complexity" follows a concave down parabola while entropy follows a linear increasing function. The post draws ideas from Kolmogorov complexity to explain this phenomenon.</p>
+
+            <figure>
+                <img src="complexodynamics_depiction.png" alt="Complexodynamics Visualization">
+            </figure>
+
+            <h2>The Second Law vs. Complexity</h2>
+            <p>The Second Law of Thermodynamics states that the entropy of any closed system tends to increase with time until it reaches a maximum value.</p>
+
+            <ul>
+                <li>Sean Carroll, a theoretical physicist, describes the Second Law as almost a tautology: a system must tend to evolve toward more random configurations because if it didn't, those configurations wouldn't be random.</li>
+                <li>This poses a deep question: if we know that the ending entropy will be high, why was it ever low to begin with? From a physics perspective, if we define the Big Bang as the initial state, why did it contain so much order (almost zero uncertainty) such that the universe's subsequent evolution destroys it?</li>
+            </ul>
+
+            <p>An interesting point is that while independent systems get monotonically more entropic, they don't get monotonically more "complicated."</p>
+
+            <h3>The Coffee Cup Analogy</h3>
+            <p>To illustrate this, the article uses the example of mixing coffee and milk:</p>
+            <ul>
+                <li><strong>Initial State (Low Entropy, Low Complexity):</strong> If we pour milk into coffee, for a brief moment, they are separated. This is a low entropy state (less uncertainty about particle location) and low complexity (the description is simple: "milk on left, coffee on right").</li>
+                <li><strong>Intermediate State (Medium Entropy, High Complexity):</strong> As they start to mix, we see tendrils and swirls. The liquids are not completely homogeneous yet. Here, it is hard to tell where the milk ends and the coffee begins. There is high complexity because there is no simple rule to describe the intricate boundaries.</li>
+                <li><strong>Final State (High Entropy, Low Complexity):</strong> Finally, the mixture becomes homogeneous (light brown). It has reached equilibrium. While entropy is maximized (maximum uncertainty), the complexity is low again because the state is simple to describe: "uniform light brown liquid."</li>
+            </ul>
+
+            <p>We can understand the boundaries intuitively. Initially, entropy forms an upper bound for complexity. At the end, the system reaches equilibrium, so complexity approaches zero. The challenge is: <em>In intermediate times, how large does complexity get, and how do we predict it?</em></p>
+
+            <h2>Defining Entropy via Kolmogorov Complexity</h2>
+            <p>To answer these questions, the author turns to <strong>Kolmogorov complexity</strong>. The theory states that the Kolmogorov complexity of a string \(x\), denoted \(K(x)\), is the length of the shortest computer program that outputs \(x\).</p>
+
+            <p>If we attempt to use this theory to define entropy in a deterministic system (like billiard balls), we run into a problem. We can define every state based on the initial state (constant size) and the number of steps \(t\) it has been run for (which takes \(\log(t)\) bits). This implies entropy would only grow logarithmically, whereas thermodynamic entropy is expected to grow linearly.</p>
+
+            <p>There are two solutions to this:</p>
+            <ol>
+                <li><strong>Probabilistic Systems:</strong> If we introduce randomness, we must describe the outcome of every random choice. For a sequence of steps, the complexity would grow polynomially (closer to linear expectations).</li>
+                <li><strong>Resource-Bounded Complexity:</strong> Instead of finding the shortest program regardless of time, we look for the shortest program that runs in a <em>short time</em>. While a simulation program is short (\(\log t\)), it takes a long time to run. A program that outputs the state quickly must be much larger.</li>
+            </ol>
+
+            <h2>Defining "Complextropy"</h2>
+            <p>Now that we have a handle on entropy, the author defines "complexity" (or "complextropy" to distinguish it).</p>
+
+            <p>Kolmogorov observed that a uniformly random string has maximal Kolmogorov complexity (highest entropy) but is one of the least "complex" strings imaginable because we can simply describe it as "a random string."</p>
+
+            <p>To formalize this, the author introduces <strong>Sophistication</strong>. Given a set \(S\) of \(n\)-bit strings, let \(K(S)\) be the length of the shortest program that outputs the elements of \(S\) and halts. Let \(K(x|S)\) be the length of the shortest program that outputs \(x\) given an oracle for testing membership in \(S\). The sophistication of \(x\), denoted \(\text{Soph}(x)\), is the smallest possible \(K(S)\) over all sets \(S\) such that:</p>
+            <ul>
+                <li>\(x \in S\)</li>
+                <li>\(K(x|S) \geq \log_2(|S|) - c\), for some constant \(c\).</li>
+            </ul>
+
+            <p>Intuitively, \(\text{Soph}(x)\) is the length of the shortest program describing a set \(S\) where \(x\) is a "random" member.</p>
+
+            <p>However, standard sophistication fails for the same reason standard Kolmogorov complexity failed for entropy: for deterministic systems, it never exceeds \(\log(t) + c\).</p>
+
+            <h3>The New Definition with Resource Bounds</h3>
+            <p>To fix this, the author introduces computational resource bounds. This prevents the model from simply "simulating the physics" (which is a short program but slow) and forces it to describe the structure visible <em>now</em>.</p>
+
+            <p>The author defines complextropy as:</p>
+            <blockquote>
+                The number of bits in the shortest computer program that runs in \(n \log n\) time, and that outputs a nearly-uniform sample from a set \(S\) such that:
+                <ol>
+                    <li>\(x \in S\)</li>
+                    <li>Any computer program that outputs \(x\) in \(n \log n\) time, given an oracle that provides independent, uniform samples from \(S\), has at least \(\log_2(|S|) - c\) bits, for some constant \(c\).</li>
+                </ol>
+            </blockquote>
+
+            <h2>Unpacking the Definition</h2>
+            <p>Now that we have the groundwork for the proof as to why the "complexity" follows a concave down parabola, let's translate this into a more manageable explanation.</p>
+
+            <div class="definition">
+                <div class="definition-title">Definition: Nearly-Uniform Sample</div>
+                A set of data points drawn from a larger population using a method that produces a distribution of results arbitrarily close to a perfectly uniform distribution.
+            </div>
+
+            <p>We use "nearly-uniform" because finding a perfectly uniform random sample is computationally difficult, whereas nearly-uniform is feasible.</p>
+
+            <h3>The Second Constraint</h3>
+            <p>The condition \(K(x|S) \geq \log_2(|S|) - c\) is derived from Information Theory.</p>
+            <ul>
+                <li>1 bit distinguishes 2 items (\(2^1\)).</li>
+                <li>2 bits distinguish 4 items (\(2^2\)).</li>
+                <li>\(k\) bits distinguish \(2^k\) items.</li>
+            </ul>
+
+            <p>Therefore, to uniquely identify one item out of \(|S|\) items by index alone, we need \(\log_2(|S|)\) bits. The constant \(c\) acts as a margin of error. This constraint ensures that \(x\) is a "generic" member of \(S\)—it has no special properties that allow us to compress it further than its raw index.</p>
+
+            <h3>Why Two Efficiency Requirements?</h3>
+            <p>The author imposes computational efficiency in two places:</p>
+            <ol>
+                <li><strong>The Sampling Algorithm:</strong> This forces the program to describe the actual complex structure visible <em>right now</em>. Without this, the complexity would collapse to \(\log(t)\) (the "simulation" cheat).</li>
+                <li><strong>The Reconstruction Algorithm:</strong> This ensures the complexity remains bounded. Without this constraint, a reconstructor with unlimited time could find "shortcuts" (similar to reward hacking in RL where the model learns a hack that gives it extra rewards with bad actions) to describe \(x\) with fewer than \(\log_2(|S|) - c\) bits. This would force us to reject valid models, causing the complexity measure to run away to infinity.</li>
+            </ol>
+
+            <p>This dynamic is similar to Reinforcement Learning, where we use trust regions (like TRPO or PPO) to prevent a model from jumping too far in the gradient space without learning the true dynamics.</p>
+
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Rithwik Nukala. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
