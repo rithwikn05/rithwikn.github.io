@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Read my latest blog posts and insights.">
-    <title>Blog - Rithwik Nukala</title>
+    <meta name="description" content="Graphics blog posts by Rithwik Nukala">
+    <title>Graphics - Blog - Rithwik Nukala</title>
 
     <style>
         /* Reset and base styles */
@@ -212,26 +212,6 @@
             color: #0843b3;
         }
 
-        /* Featured Post */
-        .featured-post {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .featured-post .blog-image {
-            height: 100%;
-            min-height: 300px;
-        }
-
-        @media (max-width: 768px) {
-            .featured-post {
-                grid-template-columns: 1fr;
-            }
-        }
-
         /* Footer */
         footer {
             background-color: #0f62fe;
@@ -281,18 +261,20 @@
 
         <section class="page-header">
             <div class="container">
-                <h1>My Blog</h1>
-                <p>I want to use this space to explore my interests in ML, graphics, Math, and Philosophy</p>
+                <h1>Graphics</h1>
+                <p>Computer graphics, rendering, and visualization</p>
             </div>
         </section>
 
         <section class="category-nav">
             <div class="category-tags">
-                <a href="blog.html" class="category-tag active">All</a>
-                <a href="blog-math-cs.html" class="category-tag">Math</a>
+                <a href="blog.html" class="category-tag">All</a>
+                <a href="blog-math.html" class="category-tag">Math</a>
+                <a href="blog-cs.html" class="category-tag">Computer Science</a>
                 <a href="blog-ml.html" class="category-tag">Machine Learning</a>
-                <a href="blog-graphics.html" class="category-tag">Graphics</a>
+                <a href="blog-graphics.html" class="category-tag active">Graphics</a>
                 <a href="blog-philosophy.html" class="category-tag">Philosophy</a>
+                <a href="blog-life.html" class="category-tag">Life</a>
             </div>
         </section>
 
@@ -300,34 +282,6 @@
             <div class="container">
                 <div class="blog-grid">
                     
-                    <!-- Featured Post -->
-                    <article class="blog-post featured-post">
-                        <div class="blog-image">Featured Post Image</div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">📅 January 1, 2025</span>
-                                <span class="blog-category">Machine Learning</span>
-                            </div>
-                            <h3>Understanding Neural Networks from First Principles</h3>
-                            <p class="blog-excerpt">Exploring the mathematical foundations behind neural networks, from linear algebra to gradient descent. We'll build intuition for how these models learn and what makes them so powerful for pattern recognition.</p>
-                            <a href="#" class="read-more">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Regular Posts -->
-                    <article class="blog-post">
-                        <div class="blog-image">Blog Image</div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">📅 December 28, 2024</span>
-                                <span class="blog-category">Math</span>
-                            </div>
-                            <h3>The Beauty of Fourier Transforms</h3>
-                            <p class="blog-excerpt">How breaking down signals into frequencies revolutionized mathematics and computing.</p>
-                            <a href="#" class="read-more">Read More →</a>
-                        </div>
-                    </article>
-
                     <article class="blog-post">
                         <div class="blog-image">Blog Image</div>
                         <div class="blog-content">
@@ -345,11 +299,11 @@
                         <div class="blog-image">Blog Image</div>
                         <div class="blog-content">
                             <div class="blog-meta">
-                                <span class="blog-date">📅 December 20, 2024</span>
-                                <span class="blog-category">Computer Science</span>
+                                <span class="blog-date">📅 November 28, 2024</span>
+                                <span class="blog-category">Graphics</span>
                             </div>
-                            <h3>Data Structures Every Student Should Know</h3>
-                            <p class="blog-excerpt">A practical guide to fundamental data structures and when to use each one.</p>
+                            <h3>The Rendering Pipeline Explained</h3>
+                            <p class="blog-excerpt">A deep dive into how modern GPUs transform 3D models into pixels on your screen.</p>
                             <a href="#" class="read-more">Read More →</a>
                         </div>
                     </article>
@@ -358,24 +312,11 @@
                         <div class="blog-image">Blog Image</div>
                         <div class="blog-content">
                             <div class="blog-meta">
-                                <span class="blog-date">📅 December 15, 2024</span>
-                                <span class="blog-category">Philosophy</span>
+                                <span class="blog-date">📅 November 8, 2024</span>
+                                <span class="blog-category">Graphics</span>
                             </div>
-                            <h3>On Learning and Curiosity</h3>
-                            <p class="blog-excerpt">Reflections on what drives us to explore new ideas and the joy of understanding.</p>
-                            <a href="#" class="read-more">Read More →</a>
-                        </div>
-                    </article>
-
-                    <article class="blog-post">
-                        <div class="blog-image">Blog Image</div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">📅 December 10, 2024</span>
-                                <span class="blog-category">Life</span>
-                            </div>
-                            <h3>Berkeley Adventures: First Semester</h3>
-                            <p class="blog-excerpt">Thoughts and experiences from my first semester at UC Berkeley.</p>
+                            <h3>Shaders and the Art of Visual Effects</h3>
+                            <p class="blog-excerpt">Understanding shader programming and how to create stunning visual effects in real-time.</p>
                             <a href="#" class="read-more">Read More →</a>
                         </div>
                     </article>
