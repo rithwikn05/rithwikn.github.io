@@ -19,15 +19,14 @@
             color: #333;
             background-color: #f9fafb;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         a {
             text-decoration: none;
             color: inherit;
-        }
-
-        img {
-            max-width: 100%;
         }
 
         .container {
@@ -90,146 +89,53 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Category Navigation */
+        /* Introduction Section */
+        .intro-section {
+            padding: 3rem 1rem 2rem;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        /* Category Navigation Buttons */
         .category-nav {
-            background: linear-gradient(135deg, #0f62fe, #4081ff);
-            padding: 0 1rem 2rem;
+            padding: 0 1rem 4rem; /* Bottom padding to separate from footer */
+            background-color: #ffffff;
+            flex: 1; /* Pushes footer down */
         }
 
         .category-tags {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.75rem;
+            gap: 1rem;
             max-width: 1100px;
             margin: 0 auto;
         }
 
         .category-tag {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem 1.25rem;
+            background-color: #f1f5f9;
+            color: #0f62fe;
+            padding: 0.75rem 1.5rem;
             border-radius: 25px;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 500;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 2px solid #0f62fe;
         }
 
         .category-tag:hover {
-            background-color: white;
-            color: #0f62fe;
-            transform: translateY(-2px);
-        }
-
-        .category-tag.active {
-            background-color: white;
-            color: #0f62fe;
-            border: 2px solid white;
-        }
-
-        /* Blog Section */
-        .blog {
-            padding: 4rem 1rem;
-            background-color: #ffffff;
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .blog-post {
-            background-color: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e5e7eb;
-        }
-
-        .blog-post:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .blog-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #0f62fe, #4081ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #0f62fe;
             color: white;
-            font-size: 1.2rem;
-        }
-
-        .blog-content {
-            padding: 1.5rem;
-        }
-
-        .blog-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .blog-date {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .blog-category {
-            background-color: #eef3ff;
-            color: #0f62fe;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-weight: 500;
-        }
-
-        .blog-content h3 {
-            color: #0f62fe;
-            margin-bottom: 0.75rem;
-            font-size: 1.3rem;
-        }
-
-        .blog-excerpt {
-            color: #555;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .read-more {
-            color: #0f62fe;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .read-more:hover {
-            color: #0843b3;
-        }
-
-        /* Featured Post */
-        .featured-post {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .featured-post .blog-image {
-            height: 100%;
-            min-height: 300px;
-        }
-
-        @media (max-width: 768px) {
-            .featured-post {
-                grid-template-columns: 1fr;
-            }
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(15, 98, 254, 0.2);
         }
 
         /* Footer */
@@ -238,6 +144,7 @@
             color: white;
             text-align: center;
             padding: 2rem 1rem;
+            margin-top: auto;
         }
 
         .footer-links,
@@ -282,13 +189,20 @@
         <section class="page-header">
             <div class="container">
                 <h1>My Blog</h1>
-                <p>I want to use this space to explore my interests in ML, graphics, Math, and Philosophy</p>
+                <p>Explorations in ML, Graphics, Math, and Philosophy</p>
+            </div>
+        </section>
+
+        <section class="intro-section">
+            <div class="container">
+                <div class="intro-text">
+                    <p>My goals for this blog are simple. I intend to use this space to explore my current interests and discover new ones. I am documenting this journey for two reasons: to solidify my own understanding through writing, and to share that knowledge with others. I hope these posts serve as a resource for like-minded people curious about the same topics.</p>
+                </div>
             </div>
         </section>
 
         <section class="category-nav">
             <div class="category-tags">
-                <a href="blog.html" class="category-tag active">All</a>
                 <a href="blog/math-cs.html" class="category-tag">Math and Computer Science</a>
                 <a href="blog/ml.html" class="category-tag">Machine Learning</a>
                 <a href="blog/graphics.html" class="category-tag">Graphics</a>
