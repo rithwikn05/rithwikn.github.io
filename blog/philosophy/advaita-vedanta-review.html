@@ -4,129 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advaita Vedanta - Rithwik Nukala</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
-        /* --- Blog Post Styles --- */
-        .blog-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; /* Matches LaTeX Palatino */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
             color: #333;
-            line-height: 1.6;
-        }
-
-        /* Header Styling */
-        .blog-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .blog-title {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #222;
-        }
-
-        .blog-meta {
-            font-style: italic;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* Typography */
-        h2 {
-            font-size: 1.8rem;
-            color: #444;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-
-        h3 {
-            font-size: 1.4rem;
-            color: #666;
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            font-size: 1.125rem; /* ~18px for readability */
+            background-color: #f9fafb;
+            line-height: 1.7;
         }
 
         a {
-            color: #0056b3;
             text-decoration: none;
-            border-bottom: 1px dotted #0056b3;
+            color: inherit;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        /* Blockquotes to match the LaTeX 'quote' env */
-        blockquote {
-            background: #f9f9f9;
-            border-left: 5px solid #ccc;
-            margin: 20px 0;
-            padding: 15px 20px;
+        /* Header */
+        header {
+            background-color: #0f62fe;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+        }
+
+        nav a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cfd8ff;
+        }
+
+        /* Article */
+        article {
+            background: white;
+            padding: 3rem 2.5rem;
+            margin: 2rem auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0f62fe;
+            margin-bottom: 0.5rem;
+            font-size: 2.3rem;
+            line-height: 1.3;
+        }
+
+        .meta {
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #eef3ff;
+        }
+
+        h2 {
+            color: #0f62fe;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #0843b3;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.7rem;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #0f62fe;
+            font-weight: 600;
+        }
+
+        em {
             font-style: italic;
             color: #555;
         }
 
-        /* Lists */
-        ul, ol {
-            margin-bottom: 1.5rem;
-            padding-left: 40px;
-        }
-        
-        li {
-            margin-bottom: 10px;
+        /* Quote/blockquote */
+        blockquote {
+            background-color: #f9fafb;
+            border-left: 4px solid #0f62fe;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
         }
 
-        /* Horizontal Rule */
-        hr {
-            border: 0;
-            height: 1px;
-            background: #ddd;
-            margin: 40px 0;
+        /* Figure */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        figure caption {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Links inside article */
+        article a {
+            color: #0f62fe;
+            border-bottom: 1px dotted #0f62fe;
         }
         
-        /* Utility for bold text */
-        strong {
-            font-weight: bold;
-            color: #222;
+        article a:hover {
+            color: #0043ce;
+        }
+
+        /* Back to blog link */
+        .back-link {
+            display: inline-block;
+            color: #0f62fe;
+            margin-top: 2rem;
+            font-weight: 600;
+            transition: color 0.3s;
+            border: none;
+        }
+
+        .back-link:hover {
+            color: #0843b3;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f62fe;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #cfd8ff;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: white;
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">Rithwik Nukala</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <article class="blog-container">
-        
-        <header class="blog-header">
-            <h1 class="blog-title">Advaita Vedanta</h1>
-            <div class="blog-meta">
-                By Rithwik Nukala <br>
-                <time datetime="2026-01-02">January 2, 2026</time>
-            </div>
-        </header>
-
-        <section>
-            <p>These are my personal notes and reflections on the philosophy of Advaita Vedanta, inspired by the teachings of Swami Sarvapriyananda as well as talking to my friends.</p>
+    <div class="container">
+        <article>
+            <h1>Advaita Vedanta: Reflections & Notes</h1>
+            <div class="meta">January 2, 2026 • Philosophy</div>
+            
+            <h2>Introduction</h2>
+            <p>These are my personal notes and reflections on the philosophy of Advaita Vedanta which I jotted down as I watched Swami Sarvapriyananda and after having conversations with friends.</p>
             
             <p><strong>Video Reference:</strong> <a href="https://www.youtube.com/watch?v=6wF1O4SJvqo" target="_blank">Watch on YouTube</a></p>
-        </section>
 
-        <hr>
-
-        <section>
-            <h2>1. The Nature of Reality: Seeing All Beings in Myself</h2>
+            <h2>The Nature of Reality: Seeing All Beings in Myself</h2>
             <p>If we posit that everything we feel through our five senses is merely our consciousness's perception, then someone who has fully internalized this—and put it into practice—is theoretically able to see beyond our physical world to what is considered "God."</p>
 
             <p>I find this idea fascinating because it not only reconciles how we, as humans, understand our environment, but it also provides a direct path to reach the divine.</p>
 
             <h3>The Dream Analogy</h3>
             <p>Are our dreams just an extension of what our consciousness experiences in the waking world? If we conclude that everything we see in daily life isn't "real" (in the material sense) but is actually a manifestation of consciousness, then dreams might just be another layer of this manifestation.</p>
+
+            
 
             <p>This leads to a diverging idea, somewhat similar to the movie <em>Inception</em>: our dreams could have dreams of their own. However, this raises a question of consistency. In order for consciousness to construct the scenarios we live in, the mind must have background knowledge of the world. If every person experiences the same reality I do, their consciousness must share similar background experiences to fabricate the world in the same way.</p>
 
@@ -136,11 +248,9 @@
             <p>If I take this thought to the extreme, it might explain why Vedanta philosophy says that "everyone is just me." If they are manifestations of my consciousness, then in reality, they <em>are</em> me.</p>
 
             <p><em>Note: This sounds similar to the "Simulation Theory." However, after deeper study, I realized the difference: Simulation theory implies a computer or external construct, whereas Vedanta implies a unified field of Consciousness.</em></p>
-        </section>
 
-        <section>
-            <h2>2. The Search for the Real</h2>
-            <p>If the mind is the source of our consciousness, does that mean our mind is the one true real thing? Wait—we as humans defined the "mind" as a physical/conceptual object to store thoughts. If we go one step deeper, the only real thing in our world is <strong>Consciousness itself</strong>.</p>
+            <h2>The Search for the Real</h2>
+            <p>If the mind is the source of our consciousness, does that mean our mind is the one true real thing? We as humans defined the "mind" as a physical/conceptual object to store thought so if we go one step deeper, the only real thing in our world is <strong>Consciousness itself</strong>.</p>
 
             <h3>The Paradox of Enlightenment</h3>
             <p><strong>Question:</strong> If one day you attain enlightenment and see God, that experience happens <em>within</em> consciousness. But if we say that everything we experience isn't real and only consciousness is real, where do we draw the line? Where does enlightenment end and the "figment" of enlightenment begin?</p>
@@ -159,10 +269,8 @@
             </blockquote>
 
             <p>Does this mean physical objects (like the Earth) are false, or that everything—people, animals, and objects—are false appearances, while the Consciousness in which they appear is the only Truth?</p>
-        </section>
 
-        <section>
-            <h2>3. The Shift: Seeing Myself in All Beings</h2>
+            <h2>The Shift: Seeing Myself in All Beings</h2>
             <p>In the first part, we explored the idea that "all beings are myself" (solipsism/projections). Now we face the inverse: <strong>I exist in everything else.</strong></p>
 
             <p>This seems to contradict the previous statement. If I exist in everything, it implies those "things" have a reality to hold me. However, the true goal of Advaita Vedanta isn't to teach that the world is fake while "I" (the ego) am the only real thing. The goal is to show that <strong>all consciousnesses are One.</strong></p>
@@ -173,34 +281,31 @@
             <p>I initially liked the idea that "all beings are superimpositions of myself" because it made me feel important—like I was the main character. But this is the exact opposite of what Vedanta teaches. One of the byproducts of seeing everyone as One is the removal of the ego. We stop caring about "ourselves" (the small self) first.</p>
 
             <p>It is important to remember that while everyone looks like an outsider to me—even my family—they are living their own lives with their own vivid experiences.</p>
-        </section>
 
-        <section>
-            <h2>4. Reconciling Devotion and Non-Dualism</h2>
+            <h2>Reconciling Devotion and Non-Dualism</h2>
             <p><strong>Question:</strong> A famous non-dualist is Ramana Maharshi. I know him from his Bhakti (devotional) songs directed toward Shiva (Arunachala). Doesn’t the idea of a God existing directly contradict the idea of non-dualism (that we ourselves are God)?</p>
 
             <p><strong>Answer:</strong> Non-dualism doesn’t deny duality; it is the ground on which duality is staged.</p>
 
             <p>I realized I was still divided by the roles/labels we place on one another. When considering everyone to be One Self, the distinction blurs. We are our own teacher, our own God, and our own Self.</p>
             
+            
+
             <ul>
-                <li>Ramana Maharshi prays to Arunachala because he sees the mountain as himself, yet also as his teacher. </li>
+                <li>Ramana Maharshi prays to Arunachala because he sees the mountain as himself, yet also as his teacher.</li>
+                <li>The mountain gave him enlightenment.</li>
                 <li>By praying to the mountain, he is validating the underlying assumption that everything is One: he is praying to his teacher, God, and himself simultaneously.</li>
             </ul>
-        </section>
 
-        <section>
-            <h2>5. Understanding Moksha (Liberation)</h2>
+            <h2>Understanding Moksha (Liberation)</h2>
             <p>We can think of Moksha not as "attaining" something new, but as <strong>uncovering our true self</strong>. The word is important: we are <em>rediscovering</em>, not becoming.</p>
 
             <p>The fundamental idea of <em>Jeevan-Mukthi</em> (liberation while living) is to become "egotistical on a cosmic scale"—realizing that the separate "you" is illusory and the only real thing is the <em>Atman</em> (Self/Consciousness).</p>
 
             <h3>The Deep Sleep Analogy</h3>
             <p>When we sleep (dreamless sleep), we are disconnected from the world. Our senses shut off. To the waking world, we are effectively gone. Yet, in that state, we are in bliss and peace. We don't care about the world because, for us, it doesn't exist. This state is closest to the true nature of the Atman.</p>
-        </section>
 
-        <section>
-            <h2>6. Levels of Reality and "The Movie"</h2>
+            <h2>Levels of Reality and "The Movie"</h2>
             <p>How do we reconcile daily life with the belief that the world is illusory? Vedanta describes levels of reality:</p>
 
             
@@ -215,18 +320,20 @@
             <p>Think of it like a movie. When we watch a movie, we know the characters aren't real. We don't call the police on the movie villain. We know it's "fake," but we immerse ourselves in it anyway.</p>
 
             <p>Achieving <em>Jeevan-Mukthi</em> doesn't mean disregarding the world. It means treating it like a movie. We play along. This is <strong>Leela</strong>—the divine play.</p>
-        </section>
 
-        <hr>
-
-        <section>
             <h2>Final Thoughts</h2>
             <p>The point of Yoga or religious practice is to clear the mind of distractions so you can see this perspective. It is a constant reminder not to fall into the trap of believing the projection is the only reality.</p>
 
             <p>Whether it is Christianity teaching that control is an illusion (surrender to God) or Vedanta teaching that the separate self is an illusion, the path moves toward the same goal: clearing the mind to remember who we truly are.</p>
-        </section>
 
-    </article>
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+        </article>
+    </div>
 
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Rithwik Nukala. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
