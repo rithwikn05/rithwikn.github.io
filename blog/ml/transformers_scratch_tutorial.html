@@ -361,7 +361,7 @@ class BPE():
         <h4>Sinusoidal Positional Embeddings</h4>
         
         <figure>
-            <img src="Sinuisoidal Positional Embddings.png" alt="Sinusoidal Positional Embeddings">
+            <img src="Sinuisoidal_Positional_Embddings.png" alt="Sinusoidal Positional Embeddings">
         </figure>
 
         <p>In the original <em>Attention Is All You Need</em> paper, the authors propose Sinusoidal Positional Embeddings, which are fixed values for each index. We want to assign a unique vector to each token embedding that our Embedding class creates. For example, in the sentence "I am Rithwik," the word "I" will have its own unique vector, "am" will have its own unique vector, and "Rithwik" will have its own unique vector. Each of these should be assigned a unique position vector that informs the model of its position during training. The method achieves this using sine and cosine functions. As shown in the image below, each entry in the position vector corresponds to a sine or cosine function; if our embedding is a 10-dimensional vector, we will have 10 sine and cosine functions.</p>
@@ -388,7 +388,7 @@ class BPE():
         <h4>RoPE (Rotary Position Embedding)</h4>
         
         <figure>
-            <img src="RoPE (Rotary Position Embedding).png" alt="RoPE (Rotary Position Embedding)">
+            <img src="RoPEpng" alt="RoPE (Rotary Position Embedding)">
         </figure>
         <p>Another class of positional embeddings is relative positional embeddings. The idea is to leverage the relative position of words within a sentence. Depending on the position of a word, we rotate its corresponding embedding by a factor of \(m \cdot \theta\), where \(m\) is the relative position and \(\theta\) is a hyperparameter. This enables us to capture relative positions not only between single words but multiple words simply by rotating the original position vector.</p>
 
