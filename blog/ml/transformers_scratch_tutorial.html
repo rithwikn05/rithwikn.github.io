@@ -12,14 +12,14 @@
 
     <style>
         :root {
-            --primary-blue: #0066ff; /* Matches the header blue */
+            --primary-blue: #0f62fe; /* Updated to match your other page */
             --bg-gray: #f8f9fa;
             --text-color: #333;
-            --code-bg: #f2f2eb; /* Matches LaTeX backcolour */
-            --code-comment: #009900; /* Matches LaTeX codegreen */
-            --code-keyword: #d000ff; /* Matches LaTeX magenta */
-            --code-string: #9400d3; /* Matches LaTeX codepurple */
-            --code-number: #808080; /* Matches LaTeX codegray */
+            --code-bg: #f2f2eb; 
+            --code-comment: #009900;
+            --code-keyword: #d000ff;
+            --code-string: #9400d3;
+            --code-number: #808080;
         }
 
         body {
@@ -31,37 +31,58 @@
             line-height: 1.6;
         }
 
-        /* Navigation Bar */
+        /* --- UPDATED HEADER STYLES --- */
         header {
             background-color: var(--primary-blue);
             color: white;
-            padding: 15px 40px;
-            display: flex;
-            /* FIXED: Changed underscore to hyphen */
-            justify-content: space-between; 
-            align-items: center;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .brand {
-            font-weight: bold;
-            font-size: 1.2rem;
+        /* This targets the container INSIDE the header */
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto; /* Centers the container */
+            padding: 0 40px; /* Adds side padding so it doesn't touch edges */
+            background: transparent; /* Overrides the white background of the main content container */
+            box-shadow: none; /* Removes shadow from header container */
+        }
+
+        header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin-left: 20px;
+            font-weight: 500;
             font-size: 0.95rem;
             opacity: 0.9;
+            transition: opacity 0.3s;
         }
 
         nav a:hover {
             opacity: 1;
             text-decoration: underline;
         }
+        /* ----------------------------- */
 
         /* Main Content Card */
-        .container {
+        .main-content { /* Renamed from .container to avoid conflict with header container */
             max-width: 800px;
             background: white;
             margin: 40px auto;
@@ -110,12 +131,12 @@
             text-align: justify;
         }
 
-        a {
+        a.link { /* Specific class for content links */
             color: var(--primary-blue);
             text-decoration: none;
         }
 
-        a:hover {
+        a.link:hover {
             text-decoration: underline;
         }
 
@@ -181,9 +202,8 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* Specific Highlight utility */
         .highlight-yellow {
-            background-color: #ffeeb0; /* yellowish */
+            background-color: #ffeeb0;
             padding: 2px 4px;
             border-radius: 3px;
             font-family: monospace;
@@ -194,7 +214,7 @@
 
     <header>
         <div class="container">
-            <a href="../index.html" class="logo">Rithwik Nukala</a>
+            <a href="../../index.html" class="logo">Rithwik Nukala</a>
             <nav>
                 <ul>
                     <li><a href="../../index.html">Home</a></li>
@@ -204,7 +224,7 @@
             </nav>
         </div>
     </header>
-    
+
     <div class="container">
         <h1>Transformer From Scratch Tutorial</h1>
         <div class="meta">
@@ -337,8 +357,6 @@ class BPE():
         <h2>Model</h2>
         
 
-[Image of transformer architecture diagram]
-
         <figure>
             <img src="transformer_img.png" alt="Transformer Architecture">
         </figure>
@@ -369,7 +387,7 @@ class BPE():
             <img src="Sinuisoidal_Positional_Embddings.png" alt="Sinusoidal Positional Embeddings">
         </figure>
 
-        <p>In the original <em>Attention Is All You Need</em> paper, the authors propose Sinusoidal Positional Embeddings, which are fixed values for each index. We want to assign a unique vector to each token embedding that our Embedding class creates. For example, in the sentence "I am Rithwik," the word "I" will have its own unique vector, "am" will have its own unique vector, and "Rithwik" will have its own unique vector. Each of these should be assigned a unique position vector that informs the model of its position during training. The method achieves this using sine and cosine functions. As shown in the image below, each entry in the position vector corresponds to a sine or cosine function; if our embedding is a 10-dimensional vector, we will have 10 sine and cosine functions.</p>
+        <p>In the original <em>Attention Is All You Need</em> paper, the authors propose Sinusoidal Positional Embeddings, which are fixed values for each index. We want to assign a unique vector to each token embedding that our Embedding class creates. For example, in the sentence "I am Rithwik," the word "I" will have its own unique vector, "am" will have its own unique vector, and "Rithwik" will have its own unique vector. Each of these should be assigned a unique position vector that informs the model of its position during training. The method achieves this using sine and cosine functions. As shown in the image above, each entry in the position vector corresponds to a sine or cosine function; if our embedding is a 10-dimensional vector, we will have 10 sine and cosine functions.</p>
 
 <pre><code class="language-python">class PositionalEncoding(nn.Module):
     def __init__(self, d_model: int, seq: int, dropout: float):
@@ -393,9 +411,9 @@ class BPE():
         <h4>RoPE (Rotary Position Embedding)</h4>
         
         <figure>
-            <img src="RoPEpng" alt="RoPE (Rotary Position Embedding)">
+            <img src="RoPE.png" alt="RoPE (Rotary Position Embedding)">
         </figure>
-        <p>Another class of positional embeddings is relative positional embeddings. The idea is to leverage the relative position of words within a sentence. Depending on the position of a word, we rotate its corresponding embedding by a factor of \(m \cdot \theta\), where \(m\) is the relative position and \(\theta\) is a hyperparameter. This enables us to capture relative positions not only between single words but multiple words simply by rotating the original position vector.</p>
+        <p>Another class of positional embeddings is relative positional embeddings (I will not be implementing that in this tutorial). The idea is to leverage the relative position of words within a sentence. Depending on the position of a word, we rotate its corresponding embedding by a factor of \(m \cdot \theta\), where \(m\) is the relative position and \(\theta\) is a hyperparameter. This enables us to capture relative positions not only between single words but multiple words simply by rotating the original position vector.</p>
 
         <h3>Layer Normalization</h3>
         <p>Now that we have conditioned our input to be acceptable by the model, we can begin training. The first potential problem we might encounter is a phenomenon known as <strong>Internal Covariate Shift</strong>. This occurs when the distribution learned from one layer to the next changes significantly. This can completely alter the trajectory of training or ruin the process altogether. We address this by normalizing the input and allowing the model to learn when to normalize the data between layers. It does this by first utilizing the standard equation to find the z-score:</p>
@@ -444,10 +462,10 @@ class BPE():
             <img src="attention.png" alt="Attention Mechanism">
         </figure>
         <p>Unlike Recurrent Neural Networks (RNNs), which process data sequentially and struggle with long-range dependencies, the Attention mechanism allows the model to look at the entire input sequence simultaneously. It dynamically focuses on the most relevant parts of the input for each step of the output.</p>
-        <p>The mechanism is often explained using a retrieval analogy involving three vectors derived from the input: Query ($Q$)—what the current token is looking for; Key ($K$)—what identifies each token in the sequence (like a label); and Value ($V$)—the actual information content of the token. The attention score is calculated by taking the dot product of the Query and the Key, which measures how "similar" or relevant one token is to another. These scores are normalized using a Softmax function to create a probability distribution (weights).</p>
+        <p>The mechanism is often explained using a retrieval analogy involving three vectors derived from the input: Query (Q)—what the current token is looking for; Key (K), what identifies each token in the sequence (like a label); and Value (V), the actual information content of the token. The attention score is calculated by taking the dot product of the Query and the Key, which measures how "similar" or relevant one token is to another. These scores are normalized using a Softmax function to create a probability distribution (weights).</p>
         <p>Finally, these weights are applied to the Values to produce a new context vector. Mathematically, Scaled Dot-Product Attention is defined as:</p>
         <p>$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$</p>
-        <p>Where \(\sqrt{d_k}\) is a scaling factor to prevent gradients from vanishing in the Softmax function. This process allows the model to "attend" to specific words—for example, associating the pronoun "it" with its antecedent "robot" appearing much earlier in the sentence—regardless of the distance between them.</p>
+        <p>Where \(\sqrt{d_k}\) is a scaling factor to prevent gradients from vanishing in the Softmax function. This process allows the model to "attend" to specific words, for example, associating the pronoun "it" with its antecedent "robot" appearing much earlier in the sentence, regardless of the distance between them.</p>
         <p>The main difference between single and Multi-Head Attention lies in the dimensionality of the Query (Q), Key (K), and Value (V) matrices. In Multi-Head Attention, we split the embedding dimension (the third axis) into multiple smaller, independent subspaces known as 'heads.' For example, if we want 16 heads, we divide the embedding dimension of Q, K, and V by 16. This results in 16 separate attention mechanisms running in parallel, allowing the model to focus on different aspects of the input simultaneously.</p>
 
 <pre><code class="language-python">class MultiHeadAttention(nn.Module):
@@ -584,7 +602,6 @@ config = {
     'num_epochs': 20
 }
 
-# Model Construction
 def build_transformer(cfg):
     src_embed = InputEmbeddings(cfg['d_model'], cfg['vocab_size'])
     tgt_embed = InputEmbeddings(cfg['d_model'], cfg['vocab_size'])
@@ -610,7 +627,6 @@ def build_transformer(cfg):
     
     return Transformer(encoder, decoder, src_embed, tgt_embed, src_pos, tgt_pos, projection)
 
-# Dataset
 class TranslationDataset(Dataset):
     def __init__(self, tokenizer, seq_len):
         self.tokenizer = tokenizer
@@ -643,7 +659,6 @@ def causal_mask(size):
     mask = torch.triu(torch.ones((1, size, size)), diagonal=1).type(torch.int)
     return mask == 0
 
-# Training Execution
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = build_transformer(config).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'])
