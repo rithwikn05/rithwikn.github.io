@@ -15,7 +15,7 @@
             --primary-blue: #0066ff; /* Matches the header blue */
             --bg-gray: #f8f9fa;
             --text-color: #333;
-            --code-bg: #f2f2eb; /* Matches LaTeX backcolour (0.95, 0.95, 0.92) */
+            --code-bg: #f2f2eb; /* Matches LaTeX backcolour */
             --code-comment: #009900; /* Matches LaTeX codegreen */
             --code-keyword: #d000ff; /* Matches LaTeX magenta */
             --code-string: #9400d3; /* Matches LaTeX codepurple */
@@ -37,7 +37,8 @@
             color: white;
             padding: 15px 40px;
             display: flex;
-            justify_content: space-between;
+            /* FIXED: Changed underscore to hyphen */
+            justify-content: space-between; 
             align-items: center;
         }
 
@@ -194,9 +195,9 @@
     <header>
         <div class="brand">Rithwik Nukala</div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Projects</a>
-            <a href="#">Blog</a>
+            <a href="#">../../Home</a>
+            <a href="#">../../Projects</a>
+            <a href="#">../../Blog</a>
         </nav>
     </header>
 
