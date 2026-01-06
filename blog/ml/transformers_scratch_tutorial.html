@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer From Scratch Tutorial</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary-blue: #0066ff; /* Matches the header blue */
+            --bg-gray: #f8f9fa;
+            --text-color: #333;
+            --code-bg: #f2f2eb; /* Matches LaTeX backcolour (0.95, 0.95, 0.92) */
+            --code-comment: #009900; /* Matches LaTeX codegreen */
+            --code-keyword: #d000ff; /* Matches LaTeX magenta */
+            --code-string: #9400d3; /* Matches LaTeX codepurple */
+            --code-number: #808080; /* Matches LaTeX codegray */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify_content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        nav a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* Main Content Card */
+        .container {
+            max-width: 800px;
+            background: white;
+            margin: 40px auto;
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Typography */
+        h1 {
+            color: var(--primary-blue);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            margin-top: 45px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 35px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #555;
+            margin-top: 25px;
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tables (Booktabs style) */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        thead th {
+            border-top: 2px solid #333;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: 2px solid #333;
+        }
+
+        /* Code Blocks Customization */
+        pre[class*="language-"] {
+            background: var(--code-bg) !important;
+            border-radius: 5px;
+            margin: 25px 0;
+            padding: 15px;
+            font-size: 0.85rem;
+            border: 1px solid #e1e1e8;
+        }
+
+        code[class*="language-"], pre[class*="language-"] {
+            text-shadow: none !important;
+            color: #333;
+            font-family: "Consolas", "Monaco", "Andale Mono", monospace;
+        }
+
+        /* Prism Theme Overrides to match LaTeX colors */
+        .token.comment { color: var(--code-comment) !important; }
+        .token.keyword { color: var(--code-keyword) !important; }
+        .token.string { color: var(--code-string) !important; }
+        .token.number { color: var(--code-number) !important; }
+        .token.operator { color: #333 !important; }
+        .token.function { color: #333 !important; }
+        .token.class-name { color: #333 !important; }
+
+        /* Images */
+        figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Specific Highlight utility */
+        .highlight-yellow {
+            background-color: #ffeeb0; /* yellowish */
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">Rithwik Nukala</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Projects</a>
+            <a href="#">Blog</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Transformer From Scratch Tutorial</h1>
+        <div class="meta">
+            By Rithwik Nukala • January 5, 2026
+        </div>
+
+        <h2>Introduction</h2>
+        <p>In this blog, I will discuss my experience building the Transformer architecture from scratch, following the original paper as well as other online tutorials.</p>
+        
+        <p>
+            <strong>Sources:</strong><br>
+            Tokenizer: <a href="https://www.youtube.com/watch?v=zduSFxRajkE">https://www.youtube.com/watch?v=zduSFxRajkE</a><br>
+            Transformer Architecture: <a href="https://medium.com/@sayedebad.777/building-a-transformer-from-scratch-a-step-by-step-guide-a3df0aeb7c9a">https://medium.com/@sayedebad.777/building-a-transformer-from-scratch-a-step-by-step-guide-a3df0aeb7c9a</a>
+        </p>
+        <p>
+            <strong>My Implementation:</strong><br>
+            <a href="https://github.com/rithwikn05/transformer_exp/tree/main">https://github.com/rithwikn05/transformer_exp/tree/main</a>
+        </p>
+
+        <h2>Tokenizer</h2>
+        <p>Tokenizers are a critical component of modern Large Language Models (LLMs). When an LLM fails to perform or exhibits specific errors, researchers often investigate the tokenizer first. With that said, let's examine how modern tokenizers function.</p>
+
+        <h3>Word-Level Tokenization</h3>
+        <p>Humans can parse words into meaning intuitively, but computers cannot do the same. At the lowest level, all programs are a series of 0s and 1s that the compiler converts into machine instructions. If we move up an abstraction layer, we can think of each bit as a number (integer, floating point, etc.). We need a way to convert our words into numbers that can be translated into the appropriate binary combinations. That is where our tokenizer becomes important. The goal of the tokenizer is to assign unique numbers (indices) to each unique element in our vocabulary.</p>
+        <p>As a simplified example, if our input sentence is "Hello, my name is Rithwik Nukala," we might assign indices such that "Hello" is at index 0, "my" is at index 1, "name" at index 2, and so on. While this is a good start, it is insufficient. One reason is that if we encounter a word during deployment that was not in the training vocabulary, we must replace that word with an unknown token, usually written as [UNK], causing the model to lose significant information. Another problem is the vocabulary size; if we attempted to index every word on the internet, the storage space required for all unique words would be unjustifiably large.</p>
+
+        <h3>Byte-Pair Encoding</h3>
+        <p>To address these issues, researchers developed a method known as Byte-Pair Encoding (BPE). This algorithm first calculates the frequency of all adjacent pairs of characters or sub-words in the training string. It then selects the pair with the highest frequency and replaces it with a new unique token corresponding to a new index. After doing this, it recalculates the frequencies, finds the new highest-frequency pair, and repeats the process.</p>
+        <p>The benefit of this approach is that the tokenizer can better handle complex or less common words by breaking them down into more common sub-parts that strictly exist in the vocabulary. Another benefit is that it allows for a fixed vocabulary size by determining exactly how many merges to perform. To see why, let's look at an example. Suppose our target vocabulary size is 500 and we start with a base vocabulary of 256 unique characters (bytes). This means we can run the BPE algorithm 244 times to create 244 new tokens by merging common pairs, expanding our vocabulary to the fixed size of 500.</p>
+
+        <p><strong>Example:</strong><br>
+        <strong>1. Initial State:</strong> We split words into characters and add an end-of-word token (&lt;/w&gt;).</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                    <th>Tokens</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>hug</td>
+                    <td>10</td>
+                    <td><code>h, u, g, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>pug</td>
+                    <td>5</td>
+                    <td><code>p, u, g, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>pun</td>
+                    <td>12</td>
+                    <td><code>p, u, n, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>bun</td>
+                    <td>4</td>
+                    <td><code>b, u, n, &lt;/w&gt;</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>2. Count Pairs:</strong> We count adjacent pairs across all words.</p>
+        <p>$$ \text{('u', 'g')} = 10 + 5 = 15 $$</p>
+        <p>$$ \text{('u', 'n')} = 12 + 4 = 16 $$</p>
+        <p>$$ \text{('h', 'u')} = 10 $$</p>
+        <p>The winner is <span class="highlight-yellow"><code>('u', 'n')</code></span> with 16 occurrences.</p>
+
+        <p><strong>3. Merge:</strong> We merge 'u' and 'n' into a single token <code>un</code>.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                    <th>Tokens</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>hug</td>
+                    <td>10</td>
+                    <td><code>h, u, g, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>pug</td>
+                    <td>5</td>
+                    <td><code>p, u, g, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>pun</td>
+                    <td>12</td>
+                    <td><code>p, <strong>un</strong>, &lt;/w&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>bun</td>
+                    <td>4</td>
+                    <td><code>b, <strong>un</strong>, &lt;/w&gt;</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+<pre><code class="language-python">from collections import defaultdict
+class BPE():
+    def __init__(self):
+        self.merges = {}
+        self.vocab = {}
+    def get_stats(self, ids):
+        # Creates a dictionary of counts of each pair in the string
+        counts = {}
+        for pair in zip(ids[:-1], ids[1:]):
+            counts[pair] = counts.get(pair, 0) + 1
+        return counts
+    def merge(self, ids, pair, idx):
+        # Collapses each pair into a new symbol
+        newids = []
+        i = 0
+        while i < len(ids):
+            if i < len(ids) - 1 and ids[i] == pair[0] and ids[i+1] == pair[1]:
+                newids.append(idx)
+                i += 2
+            else:
+                newids.append(ids[i])
+                i += 1
+        return newids</code></pre>
+
+        <h2>Model</h2>
+        
+
+[Image of transformer architecture diagram]
+
+        <figure>
+            <img src="transformer_img.png" alt="Transformer Architecture">
+        </figure>
+
+        <p>We will now begin building our model. We will go through each block, discuss its function, and review my implementation of it:</p>
+
+        <h3>Input Embeddings</h3>
+        <p>After converting the input sentence into unique integers, we need to convert them into vectors. This step involves constructing a lookup table based on the vocabulary. The lookup table contains a unique vector corresponding to each element in the vocabulary, which can be accessed using basic indexing.</p>
+
+<pre><code class="language-python">class InputEmbeddings(nn.Module):
+    def __init__(self, d_model: int, vocab_size: int):
+        super().__init__()
+        self.vocab_size = vocab_size
+        self.d_model = d_model
+        self.embedding = nn.Embedding(vocab_size, d_model)
+      
+    def forward(self, x):
+        return self.embedding(x) * math.sqrt(self.d_model)</code></pre>
+
+        <p>Here, <code>d_model</code> represents the dimensions of the embeddings, and <code>vocab_size</code> is the size of the vocabulary we obtained from training the tokenizer.</p>
+
+        <h3>Positional Encoding</h3>
+        <p>The idea behind positional encoding is that while we understand how the relative positions of words in a sentence impact meaning, the model does not. Positional encoding helps the model remember and learn the patterns regarding where certain words appear based on the context of the sentence.</p>
+
+        <h4>Sinusoidal Positional Embeddings</h4>
+        
+        <figure>
+            <img src="Sinuisoidal Positional Embddings.png" alt="Sinusoidal Positional Embeddings">
+        </figure>
+
+        <p>In the original <em>Attention Is All You Need</em> paper, the authors propose Sinusoidal Positional Embeddings, which are fixed values for each index. We want to assign a unique vector to each token embedding that our Embedding class creates. For example, in the sentence "I am Rithwik," the word "I" will have its own unique vector, "am" will have its own unique vector, and "Rithwik" will have its own unique vector. Each of these should be assigned a unique position vector that informs the model of its position during training. The method achieves this using sine and cosine functions. As shown in the image below, each entry in the position vector corresponds to a sine or cosine function; if our embedding is a 10-dimensional vector, we will have 10 sine and cosine functions.</p>
+
+<pre><code class="language-python">class PositionalEncoding(nn.Module):
+    def __init__(self, d_model: int, seq: int, dropout: float):
+        super().__init__()
+        self.d_model = d_model
+        self.seq = seq
+        self.dropout = nn.Dropout(dropout)
+
+        pe = torch.zeros(seq, d_model)
+        position = torch.arange(0, seq, dtype=torch.float).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(0)
+        self.register_buffer('pe', pe)
+      
+    def forward(self, x):
+        x = x + (self.pe[:, :x.shape[1], :].requires_grad_(False))
+        return self.dropout(x)</code></pre>
+
+        <h4>RoPE (Rotary Position Embedding)</h4>
+        
+        <figure>
+            <img src="RoPE (Rotary Position Embedding).png" alt="RoPE (Rotary Position Embedding)">
+        </figure>
+        <p>Another class of positional embeddings is relative positional embeddings. The idea is to leverage the relative position of words within a sentence. Depending on the position of a word, we rotate its corresponding embedding by a factor of \(m \cdot \theta\), where \(m\) is the relative position and \(\theta\) is a hyperparameter. This enables us to capture relative positions not only between single words but multiple words simply by rotating the original position vector.</p>
+
+        <h3>Layer Normalization</h3>
+        <p>Now that we have conditioned our input to be acceptable by the model, we can begin training. The first potential problem we might encounter is a phenomenon known as <strong>Internal Covariate Shift</strong>. This occurs when the distribution learned from one layer to the next changes significantly. This can completely alter the trajectory of training or ruin the process altogether. We address this by normalizing the input and allowing the model to learn when to normalize the data between layers. It does this by first utilizing the standard equation to find the z-score:</p>
+        <p>\[ x = \frac{x - mean}{std} \]</p>
+        <p>However, we also add a few extra terms:</p>
+        <p>\[ x = alpha * \frac{x - mean}{std} + bias \]</p>
+        <p>This may seem counterintuitive at first, as the alpha counteracts the division of the standard deviation while the bias counteracts the subtraction of the mean. However, the important takeaway is that this gives the model flexibility. It allows the model to decide what is best for it at that specific layer—whether to include the normalization or not. By doing this, the distribution passed from layer to layer changes gradually rather than abruptly, allowing the model to learn the dynamics of the data space more effectively.</p>
+
+<pre><code class="language-python">class LayerNormalization(nn.Module):
+    def __init__(self, features: int, eps: float=10**-6) -> None:
+        super().__init__()
+        self.eps = eps
+        self.alpha = nn.Parameter(torch.ones(features))
+        self.bias = nn.Parameter(torch.zeros(features))
+      
+    def forward(self, x):
+        mean = x.mean(dim = -1, keepdim = True)
+        std = x.std(dim = -1, keepdim = True)
+        return self.alpha * (x - mean) / (std + self.eps) + self.bias</code></pre>
+
+        <h3>Feed Forward Layer</h3>
+        <p>The purpose of the Feed Forward layer is to add complexity and non-linearity to the model. This is where the model processes the information learned from the attention layers. Without this step, the entire model could be simplified to a linear transformation like \(A+B=C\), eliminating the depth the model gains through the training process.</p>
+
+<pre><code class="language-python">class FeedForward(nn.Module):
+    def __init__(self, d_model: int, d_ff: int, dropout: float) -> None:
+        super().__init__()
+        self.linear1 = nn.Linear(d_model, d_ff)
+        self.dropout = nn.Dropout(dropout)
+        self.linear2 = nn.Linear(d_ff, d_model)
+
+    def forward(self, x):
+        return self.linear2(self.dropout(torch.relu(self.linear1(x))))</code></pre>
+
+        <h3>Attention</h3>
+
+        <h4>RNN</h4>
+        <p>The attention block builds upon concepts from RNNs. A major issue with RNNs is their low spatial memory due to their architecture. RNNs update their weights sequentially; the previous token's state is directly used to update the state for the next token. The inherent problem with this is that even if an earlier word correlates more strongly with the current token, the model tends to prioritize closer tokens instead. This can result in a loss of information or incorrect semantic learning.</p>
+        
+        <figure>
+            <img src="RNN.png" alt="RNN Diagram">
+        </figure>
+
+        <h4>Single and Multi Headed Attention</h4>
+        
+        <figure>
+            <img src="attention.png" alt="Attention Mechanism">
+        </figure>
+        <p>Unlike Recurrent Neural Networks (RNNs), which process data sequentially and struggle with long-range dependencies, the Attention mechanism allows the model to look at the entire input sequence simultaneously. It dynamically focuses on the most relevant parts of the input for each step of the output.</p>
+        <p>The mechanism is often explained using a retrieval analogy involving three vectors derived from the input: Query ($Q$)—what the current token is looking for; Key ($K$)—what identifies each token in the sequence (like a label); and Value ($V$)—the actual information content of the token. The attention score is calculated by taking the dot product of the Query and the Key, which measures how "similar" or relevant one token is to another. These scores are normalized using a Softmax function to create a probability distribution (weights).</p>
+        <p>Finally, these weights are applied to the Values to produce a new context vector. Mathematically, Scaled Dot-Product Attention is defined as:</p>
+        <p>$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$</p>
+        <p>Where \(\sqrt{d_k}\) is a scaling factor to prevent gradients from vanishing in the Softmax function. This process allows the model to "attend" to specific words—for example, associating the pronoun "it" with its antecedent "robot" appearing much earlier in the sentence—regardless of the distance between them.</p>
+        <p>The main difference between single and Multi-Head Attention lies in the dimensionality of the Query (Q), Key (K), and Value (V) matrices. In Multi-Head Attention, we split the embedding dimension (the third axis) into multiple smaller, independent subspaces known as 'heads.' For example, if we want 16 heads, we divide the embedding dimension of Q, K, and V by 16. This results in 16 separate attention mechanisms running in parallel, allowing the model to focus on different aspects of the input simultaneously.</p>
+
+<pre><code class="language-python">class MultiHeadAttention(nn.Module):
+    def __init__(self, d_model: int, h: int, dropout: float):
+        super().__init__()
+        self.d_model = d_model
+        self.h = h
+        assert d_model % h == 0, "d_model is not divisible by h"
+
+        self.d_k = d_model // h
+        self.w_q = nn.Linear(d_model, d_model, bias=False)
+        self.w_k = nn.Linear(d_model, d_model, bias=False)
+        self.w_v = nn.Linear(d_model, d_model, bias=False)
+        self.w_o = nn.Linear(d_model, d_model, bias=False)
+        self.dropout = nn.Dropout(dropout)
+
+    @staticmethod
+    def attention(query, key, value, mask, dropout: nn.Dropout):
+        d_k = query.shape[-1]
+        attention_scores = (query @ key.transpose(-2, -1)) / math.sqrt(d_k)
+        if mask is not None:
+            attention_scores = attention_scores.masked_fill(mask == 0, -1e9)
+        attention_scores = attention_scores.softmax(dim=-1)
+        if dropout is not None:
+            attention_scores = dropout(attention_scores)
+        return (attention_scores @ value), attention_scores
+
+    def forward(self, q, k, v, mask):
+        query = self.w_q(q)
+        key = self.w_k(k)
+        value = self.w_v(v)
+
+        query = query.view(query.shape[0], -1, self.h, self.d_k).transpose(1, 2)
+        key = key.view(key.shape[0], -1, self.h, self.d_k).transpose(1, 2)
+        value = value.view(value.shape[0], -1, self.h, self.d_k).transpose(1, 2)
+
+        x, self.attention_scores = MultiHeadAttention.attention(query, key, value, mask, self.dropout)
+        
+        x = x.transpose(1, 2).contiguous().view(x.shape[0], -1, self.h * self.d_k)
+        return self.w_o(x)</code></pre>
+
+        <h3>Residual Connections</h3>
+        <p>Residual Connections are a general form of skip connections. There are two potential problems that can occur during training: vanishing or exploding gradients. Residual connections help solve the vanishing gradient problem. The vanishing gradient problem occurs when, for example, our activation function is a sigmoid, where the partial derivative during back-propagation is \(p(1-p)\). Since sigmoid normalizes the values to be between 0 and 1, the term \(p(1-p)\) is always smaller than 1. If our network is deep enough, the repeated multiplication causes the product to approach 0 and vanish. Residual connections help solve this problem by allowing the gradients to bypass certain layers, keeping the magnitude of the signal large enough so it doesn't vanish.</p>
+
+<pre><code class="language-python">class ResidualConnection(nn.Module):
+    def __init__(self, features: int, dropout: float) -> None:
+        super().__init__()
+        self.dropout = nn.Dropout(dropout)
+        self.norm = LayerNormalization(features)
+      
+    def forward(self, x, sublayer):
+        return x + self.dropout(sublayer(self.norm(x)))</code></pre>
+
+        <h3>Encoder Block</h3>
+        <p>The Encoder block functions as the context-understanding engine of the Transformer. A major limitation in previous architectures like RNNs was the sequential processing of data, which made it difficult to learn relationships between distant words (long-range dependencies) and prohibited parallelization. If a dependency exists between the first and last word of a long paragraph, the signal in an RNN must travel through all intermediate steps, often diluting the context. The Encoder solves this using self-attention. By computing the attention scores between every pair of words simultaneously, the Encoder allows gradients to flow directly between related words regardless of their distance. This reduces the path length for information flow from \(O(n)\) to \(O(1)\), creating a parallelized and deeply contextualized representation of the input.</p>
+
+<pre><code class="language-python">class EncoderBlock(nn.Module):
+    def __init__(self, features: int, self_attention_block: MultiHeadAttention, feed_forward_block: FeedForward, dropout: float) -> None:
+        super().__init__()
+        self.self_attention_block = self_attention_block
+        self.feed_forward_block = feed_forward_block
+        self.residual_connections = nn.ModuleList([ResidualConnection(features, dropout) for _ in range(2)])
+      
+    def forward(self, x, src_mask):
+        x = self.residual_connections[0](x, lambda x: self.self_attention_block(x, x, x, src_mask))
+        x = self.residual_connections[1](x, self.feed_forward_block)
+        return x
+
+class Encoder(nn.Module):
+    def __init__(self, features: int, layers: nn.ModuleList) -> None:
+        super().__init__()
+        self.layers = layers
+        self.norm = LayerNormalization(features)
+      
+    def forward(self, x, mask):
+        for layer in self.layers:
+            x = layer(x, mask)
+        return self.norm(x)</code></pre>
+
+        <h3>Decoder Block</h3>
+        <p>The Decoder block acts as the generative component, constructing the output sequence element by element. A unique problem here is "information leakage," where the model might cheat during training by seeing future words it hasn't generated yet. Additionally, the model needs a way to bridge the gap between the source input and the target output. The Decoder solves the leakage problem with masked self-attention, which sets attention scores for future positions to negative infinity so they become zero after the softmax function. It solves the bridging problem with cross-attention, where the decoder uses its current state as the "Query" and the Encoder’s output as the "Keys" and "Values," effectively allowing the model to focus on the specific parts of the source input relevant to the word it is currently trying to predict.</p>
+
+<pre><code class="language-python">class DecoderBlock(nn.Module):
+    def __init__(self, features: int, self_attention_block: MultiHeadAttention, cross_attention_block: MultiHeadAttention, feed_forward_block: FeedForward, dropout: float) -> None:
+        super().__init__()
+        self.self_attention_block = self_attention_block
+        self.cross_attention_block = cross_attention_block
+        self.feed_forward_block = feed_forward_block
+        self.residual_connections = nn.ModuleList([ResidualConnection(features, dropout) for _ in range(3)])
+
+    def forward(self, x, encoder_output, src_mask, tgt_mask):
+        x = self.residual_connections[0](x, lambda x: self.self_attention_block(x, x, x, tgt_mask))
+        x = self.residual_connections[1](x, lambda x: self.cross_attention_block(x, encoder_output, encoder_output, src_mask))
+        x = self.residual_connections[2](x, self.feed_forward_block)
+        return x
+
+class Decoder(nn.Module):
+    def __init__(self, features: int, layers: nn.ModuleList) -> None:
+        super().__init__()
+        self.layers = layers
+        self.norm = LayerNormalization(features)
+      
+    def forward(self, x, encoder_output, src_mask, tgt_mask):
+        for layer in self.layers:
+            x = layer(x, encoder_output, src_mask, tgt_mask)
+        return self.norm(x)</code></pre>
+
+        <h3>Projection Layer (aka Linear Layer)</h3>
+        <p>The Linear layer functions as the feature transformation and processing unit of the network. A major limitation of attention mechanisms is that they are essentially just "routers". They calculate weighted averages to decide which information to focus on, but they perform very little actual computation or transformation of that information. Furthermore, without non-linear transformations, a deep neural network is mathematically equivalent to a single layer, preventing it from learning complex patterns like sarcasm or intricate grammar. The Linear layer solves this by performing a matrix multiplication (\(y = xW + b\)) that projects the input into a different, often higher dimensional, space. When combined with a non-linear activation function like ReLU, this allows the network to act as a "universal function approximator," enabling it to distort and manipulate the feature space to solve complex classification and regression tasks that the attention mechanism alone cannot handle.</p>
+
+<pre><code class="language-python">class ProjectionLayer(nn.Module):
+    def __init__(self, d_model, vocab_size):
+        super().__init__()
+        self.proj = nn.Linear(d_model, vocab_size)
+
+    def forward(self, x) -> None:
+        return self.proj(x)</code></pre>
+
+
+        <h2>Training</h2>
+        <p>The training loop is the engine where the model actually learns to map inputs to outputs. A unique aspect of training Transformers is the use of Teacher Forcing. In a standard inference setting, the model would generate one word, feed it back into itself, and then generate the next. However, during training, this can be unstable; if the model makes a mistake early on, all subsequent predictions would be based on garbage data. Teacher Forcing solves this by feeding the model the actual correct target sequence as input (shifted by one position) regardless of what the model predicts. To ensure the model doesn't "cheat" by looking at these future answers, we apply a Causal Mask to the decoder self-attention. This mask ensures that when predicting the token at position \(t\), the model can only attend to positions \(0\) through \(t\), effectively blinding it to the future. Finally, the loss is calculated using Cross-Entropy, comparing the model's predicted probability distribution against the actual target tokens (while ignoring padding), and this error signal is back-propagated to update the weights.</p>
+
+<pre><code class="language-python"># Configuration
+config = {
+    'd_model': 512,
+    'vocab_size': len(tokenizer.vocab),
+    'seq_len': 100,
+    'd_ff': 2048,
+    'h': 8, 
+    'dropout': 0.1,
+    'N': 6,
+    'batch_size': 8,
+    'lr': 1e-4,
+    'num_epochs': 20
+}
+
+# Model Construction
+def build_transformer(cfg):
+    src_embed = InputEmbeddings(cfg['d_model'], cfg['vocab_size'])
+    tgt_embed = InputEmbeddings(cfg['d_model'], cfg['vocab_size'])
+    src_pos = PositionalEncoding(cfg['d_model'], cfg['seq_len'], cfg['dropout'])
+    tgt_pos = PositionalEncoding(cfg['d_model'], cfg['seq_len'], cfg['dropout'])
+    
+    encoder_blocks = []
+    for _ in range(cfg['N']):
+        attn = MultiHeadAttention(cfg['d_model'], cfg['h'], cfg['dropout'])
+        ff = FeedForward(cfg['d_model'], cfg['d_ff'], cfg['dropout'])
+        encoder_blocks.append(EncoderBlock(cfg['d_model'], attn, ff, cfg['dropout']))
+        
+    decoder_blocks = []
+    for _ in range(cfg['N']):
+        self_attn = MultiHeadAttention(cfg['d_model'], cfg['h'], cfg['dropout'])
+        cross_attn = MultiHeadAttention(cfg['d_model'], cfg['h'], cfg['dropout'])
+        ff = FeedForward(cfg['d_model'], cfg['d_ff'], cfg['dropout'])
+        decoder_blocks.append(DecoderBlock(cfg['d_model'], self_attn, cross_attn, ff, cfg['dropout']))
+        
+    encoder = Encoder(cfg['d_model'], nn.ModuleList(encoder_blocks))
+    decoder = Decoder(cfg['d_model'], nn.ModuleList(decoder_blocks))
+    projection = ProjectionLayer(cfg['d_model'], cfg['vocab_size'])
+    
+    return Transformer(encoder, decoder, src_embed, tgt_embed, src_pos, tgt_pos, projection)
+
+# Dataset
+class TranslationDataset(Dataset):
+    def __init__(self, tokenizer, seq_len):
+        self.tokenizer = tokenizer
+        self.seq_len = seq_len
+        self.data = [
+            ("hello world", "hello world"),
+            ("goodbye", "goodbye"),
+        ]
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        src_text, tgt_text = self.data[idx]
+        
+        enc_input = [tokenizer.vocab['[SOS]']] + tokenizer.encode(src_text) + [tokenizer.vocab['[EOS]']]
+        dec_input = [tokenizer.vocab['[SOS]']] + tokenizer.encode(tgt_text)
+        label = tokenizer.encode(tgt_text) + [tokenizer.vocab['[EOS]']]
+        
+        def pad(x):
+            return x + [tokenizer.vocab['[PAD]']] * (self.seq_len - len(x))
+            
+        return {
+            "encoder_input": torch.tensor(pad(enc_input), dtype=torch.long),
+            "decoder_input": torch.tensor(pad(dec_input), dtype=torch.long),
+            "label": torch.tensor(pad(label), dtype=torch.long)
+        }
+
+def causal_mask(size):
+    mask = torch.triu(torch.ones((1, size, size)), diagonal=1).type(torch.int)
+    return mask == 0
+
+# Training Execution
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = build_transformer(config).to(device)
+optimizer = torch.optim.Adam(model.parameters(), lr=config['lr'])
+loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer.vocab['[PAD]'])
+dataset = TranslationDataset(tokenizer, config['seq_len'])
+dataloader = DataLoader(dataset, batch_size=config['batch_size'], shuffle=True)
+
+model.train()
+for epoch in range(config['num_epochs']):
+    for batch in dataloader:
+        encoder_input = batch['encoder_input'].to(device)
+        decoder_input = batch['decoder_input'].to(device)
+        label = batch['label'].to(device)
+        
+        src_mask = (encoder_input != tokenizer.vocab['[PAD]']).unsqueeze(1).unsqueeze(2)
+        tgt_mask = (decoder_input != tokenizer.vocab['[PAD]']).unsqueeze(1).unsqueeze(2)
+        tgt_mask = tgt_mask & causal_mask(decoder_input.size(1)).to(device)
+        
+        encoder_output = model.encode(encoder_input, src_mask)
+        decoder_output = model.decode(encoder_output, src_mask, decoder_input, tgt_mask)
+        proj_output = model.project(decoder_output)
+        
+        loss = loss_fn(proj_output.view(-1, config['vocab_size']), label.view(-1))
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        
+    print(f"Epoch {epoch+1}, Loss: {loss.item()}")</code></pre>
+
+        <h2>Conclusion</h2>
+        <p>This marks the end of my tutorial. I hope you have benefited from this guide, since I definitely learned a lot in this process.</p>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
