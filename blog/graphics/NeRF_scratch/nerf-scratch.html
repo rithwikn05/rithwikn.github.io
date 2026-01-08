@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeRF Tutorial</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+
+    <style>
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #f9fafb; /* Light gray background */
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER STYLES --- */
+        header {
+            background-color: #0f62fe; /* Primary Blue */
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cfd8ff;
+            text-decoration: none;
+        }
+
+        /* --- ARTICLE CARD --- */
+        article {
+            background: white;
+            padding: 3rem 2.5rem;
+            margin: 2rem auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 900px;
+        }
+
+        /* --- CONTENT TYPOGRAPHY --- */
+        h1 {
+            color: #0f62fe;
+            margin-bottom: 0.5rem;
+            font-size: 2.3rem;
+            line-height: 1.3;
+        }
+
+        .meta {
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #eef3ff;
+        }
+
+        h2 {
+            color: #0f62fe;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        h4 {
+            color: #555;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-bottom: 1.2rem;
+            margin-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .link-blue {
+            color: #0f62fe;
+        }
+
+        /* --- DEFINITION BLOCKS (New for this file) --- */
+        .definition {
+            background-color: #f4f7ff;
+            border-left: 5px solid #0f62fe;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .definition strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #0f62fe;
+        }
+
+        /* --- CODE BLOCKS --- */
+        pre[class*="language-"] {
+            border-radius: 5px;
+            margin: 10px 0 25px 0;
+            border: 1px solid #e1e1e8;
+            font-size: 0.85rem;
+        }
+        
+        .code-caption {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* --- IMAGES (With the 70% fix) --- */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 70%; /* Keeps images smaller/centered as requested */
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        figcaption {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="../../../index.html" class="logo">Rithwik Nukala</a>
+            <nav>
+                <ul>
+                    <li><a href="../../../index.html">Home</a></li>
+                    <li><a href="../../../projects.html">Projects</a></li>
+                    <li><a href="../../../blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <article>
+            <h1>NeRF Tutorial</h1>
+            <div class="meta">
+                By Rithwik Nukala • January 8, 2026
+            </div>
+
+            <h2>Introduction</h2>
+            <p>In this blog, I review the NeRF paper: <em>NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis</em> and demonstrate an implementation from scratch. You can find the full source code for this project on <a href="https://github.com/rithwikn05/NeRF_exp" class="link-blue">my GitHub</a>.</p>
+            
+            <p>There are four key components to implementing a NeRF:</p>
+            <ol>
+                <li>Processing the 5D Input (Spatial Position + View Direction)</li>
+                <li>Generating the Output (RGB Color + Volume Density)</li>
+                <li>Implementing Volume Rendering</li>
+                <li>Calculating the Rendering Loss</li>
+            </ol>
+
+            <h2>Model</h2>
+            <figure>
+                <img src="model_arch.png" alt="NeRF Architecture">
+                <figcaption>Figure 1: NeRF Architecture</figcaption>
+            </figure>
+
+            <p>As shown in the diagram, the model architecture consists of four primary stages:</p>
+            <ol>
+                <li>Positional Encoding</li>
+                <li>Linear Layers with ReLU Activations</li>
+                <li>View Direction Encoding</li>
+                <li>Sigma (Density) Output</li>
+            </ol>
+
+            <p>We begin by adding positional encoding to the input coordinates and passing them through an initial linear block. The data then flows through a sequence of four linear layers, each followed by a ReLU activation. At this point, we introduce a skip connection, concatenating the original positional encoding back into the feature vector before passing it through the fifth linear layer. This is followed by three additional layers of linear transformations and ReLU activations.</p>
+            
+            <p>After the eighth layer, the model splits into two branches: one outputs a scalar sigma value (density), while the other feeds into a final linear block. In this final block, we inject the view direction encoding. The features are then downsized by half and finally projected to a 3-channel RGB output.</p>
+
+            <span class="code-caption">NeRF Model</span>
+<pre><code class="language-python">class NeRF(nn.Module):
+  def __init__(self, pos_enc_dim=63, view_enc_dim=27, hidden=256) -> None:
+      super().__init__()
+      self.linear1 = nn.Sequential(nn.Linear(pos_enc_dim,hidden),nn.ReLU())
+      self.pre_skip_linear = nn.Sequential()
+      for _ in range(4):
+       self.pre_skip_linear.append(nn.Linear(hidden,hidden))
+       self.pre_skip_linear.append(nn.ReLU())
+
+      self.linear_skip = nn.Sequential(nn.Linear(pos_enc_dim+hidden,hidden),nn.ReLU())
+
+      self.post_skip_linear = nn.Sequential()
+      for _ in range(2):
+       self.post_skip_linear.append(nn.Linear(hidden,hidden))
+       self.post_skip_linear.append(nn.ReLU())
+
+      self.density_layer = nn.Sequential(nn.Linear(hidden,1),nn.ReLU())
+
+      self.linear2 = nn.Linear(hidden,hidden)
+
+      self.color_linear1 = nn.Sequential(nn.Linear(hidden+view_enc_dim,hidden//2),nn.ReLU())
+      self.color_linear2 = nn.Sequential(nn.Linear(hidden//2,3),nn.Sigmoid())
+
+  def forward(self, input):
+
+    positions = input[...,:3]
+    view_dirs = input[...,3:]
+
+    # Encode
+    pos_enc = encoding(positions,L=10)
+    view_enc = encoding(view_dirs,L=4)
+
+    x = self.linear1(pos_enc)
+    x = self.pre_skip_linear(x)
+
+    # Skip connection
+    x = torch.cat([x,pos_enc],dim=-1)
+    x = self.linear_skip(x)
+
+    x = self.post_skip_linear(x)
+
+    # Density
+    sigma = self.density_layer(x)
+
+    x = self.linear2(x)
+
+    # View Encoding
+    x = torch.cat([x,view_enc],dim=-1)
+    x = self.color_linear1(x)
+
+    # Color Prediction
+    rgb = self.color_linear2(x)
+
+    return torch.cat([sigma,rgb],dim=-1)</code></pre>
+
+            <h2>Generating Rays</h2>
+            <p>Before diving into the implementation details, it is important to understand the concept of volume rendering.</p>
+
+            <h3>Volume Rendering</h3>
+            <p>Volume rendering is a visualization technique used to generate a 2D projection of a 3D dataset, such as a CT scan or a density cloud. Unlike surface rendering, which typically constructs images using hollow polygon shells, volume rendering visualizes the entire interior of the data simultaneously.</p>
+            
+            <p>It works by mapping raw data values at every point in 3D space to optical properties, specifically color and opacity, using a "transfer function." The system then composites these values, either by marching rays through the volume or blending a stack of texture slices, to create an image that reveals internal structures, density variations, and semi-transparent features that would otherwise be hidden.</p>
+
+            <h4>Volume Rendering with Slices</h4>
+            <p>This method renders the 3D volume by stacking multiple slices and applying alpha blending.</p>
+
+            <div class="definition">
+                <strong>Definition (Alpha Blending)</strong>
+                A technique used to overlay a translucent foreground image onto a background image using an alpha channel. The resulting pixel value is calculated as:
+                \[
+                    I = \alpha F + (1-\alpha)B
+                \]
+                where \(F\) is the foreground color, \(B\) is the background color, and \(\alpha\) represents the opacity mask.
+            </div>
+
+            <p>A challenge with this approach is that the optimal slicing order depends on the camera's position relative to the object. If the slices are axis-aligned, viewing the object from certain angles can cause artifacts.</p>
+            
+            <p>Instead of cutting planes along the dataset's axes, we can generate planes that are camera-aligned. While this results in non-uniform shapes for each cut, it is acceptable because we only care about the data within the asset's boundaries. As long as the camera-aligned slices cover the volume, the rendering remains accurate.</p>
+
+            <figure>
+                <img src="volumetric_rendering_slices_camera.png" alt="Camera aligned slices">
+                <figcaption>Figure 2: Camera aligned slices</figcaption>
+            </figure>
+
+            <p>There are several ways to compute the shapes of these slices:</p>
+            <ol>
+                <li><strong>CPU Calculation:</strong> This is generally inefficient due to a lack of parallelism and the overhead of transferring geometry data to the GPU for drawing.</li>
+                <li><strong>Geometry Shader:</strong>
+                    <ul>
+                        <li>The geometry shader sits between the vertex shader (which processes individual points) and the fragment shader (which colors pixels) in the graphics pipeline.</li>
+                        <li>While a vertex shader takes one input and produces one output, a geometry shader takes a primitive (point, line, triangle) and can generate zero, one, or many new primitives.</li>
+                    </ul>
+                    We can utilize the geometry shader by providing a single dummy point, the camera angle, and the volume size. The shader can then output the four vertices required for the slice at that depth.
+                </li>
+                <li><strong>Custom Clipping Planes:</strong> We can define clipping planes aligned with the asset's boundaries, allowing the hardware to handle the clipping automatically.</li>
+                <li><strong>Alpha Zero Blending:</strong> During the blending phase, rather than geometrically clipping the plane, we can simply set the alpha value to zero whenever the plane crosses the boundary of the asset. This approach is often computationally faster.</li>
+            </ol>
+
+            <h4>Volume Rendering with Ray Casting</h4>
+            <p>Before discussing ray casting, it is helpful to distinguish it from ray tracing.</p>
+
+            <div class="definition">
+                <strong>Definition (Ray Tracing)</strong>
+                A recursive rendering algorithm that generates an image by tracing the path of light in reverse, from the observer's "eye" through each pixel of the image plane and into the scene. It simulates the physical interaction of light with objects by calculating ray-surface intersections and spawning secondary rays to account for global illumination effects such as reflection, refraction, and shadows.
+            </div>
+
+            <figure>
+                <img src="ray_tracing.jpg" alt="Ray Tracing Logic">
+                <figcaption>Figure 3: Ray Tracing Logic</figcaption>
+            </figure>
+
+            <p>As shown in the image, ray tracing simulates light transport by calculating how rays behave when projected from the observer. In contrast, here is the definition of ray casting:</p>
+
+            <div class="definition">
+                <strong>Definition (Ray Casting)</strong>
+                An image-order rendering algorithm that determines the visibility of surfaces (or volume data) by projecting a single non-recursive ray from the center of projection through each pixel of the image plane into the scene. For surface rendering, the algorithm identifies the closest object intersecting the ray; for volume rendering, it samples and accumulates data along the ray's path through a volumetric dataset.
+            </div>
+
+            <figure>
+                <img src="ray_casting.jpg" alt="Ray Casting Logic">
+                <figcaption>Figure 4: Ray Casting Logic</figcaption>
+            </figure>
+
+            <p>In essence, while ray tracing calculates complex lighting and shading interactions, ray casting focuses on gathering information from the volume data along a straight path.</p>
+
+            <p>In the context of volume rendering, ray casting works by sampling the intensity profile (density) as the ray penetrates the volume. This allows us to determine if an object exists at a point, whether it is solid, and what material properties it possesses.</p>
+
+            <p>The accumulated data is processed using <strong>ray functions</strong>, which convert the 3D information captured by the ray into a 2D projection. Common ray functions include:</p>
+            <ol>
+                <li><strong>MIP (Maximum Intensity Projection):</strong> Returns the maximum density value encountered along the ray.</li>
+                <li><strong>Accumulation:</strong> Sums the density values along the entire path.</li>
+                <li><strong>Average:</strong> Computes the mean density value along the path.</li>
+                <li><strong>First-hit:</strong> Returns the value of the first non-zero density encountered.</li>
+            </ol>
+
+            <p>Now, let's examine the specific implementation for NeRF.</p>
+            
+            <p><strong>Ray Generation (get_rays):</strong> We begin by creating a grid of 2D coordinates corresponding to every pixel in the image. These coordinates are transformed into 3D direction vectors relative to the camera, scaled by the focal length to establish the correct field of view. We then rotate these local vectors using the camera-to-world matrix so they align with the 3D scene, setting the origin of every ray to the camera's position.</p>
+            
+            <p><strong>Volume Rendering (render_rays):</strong> We sample a sequence of depth values along each ray between the near and far planes. To prevent visual artifacts, we apply random noise to these steps (stratified sampling). We then calculate the 3D coordinates for each sample point and query the neural network for raw density and color values. Next, we convert the density into opacity based on the distance between points and calculate transmittance to determine how much light is occluded as it travels along the ray. Finally, we compute a weighted sum of the colors and opacities to produce the final pixel color.</p>
+
+            <span class="code-caption">Getting and Generating Rays</span>
+<pre><code class="language-python">def get_rays(H, W, focal, c2w):
+  """
+  Generate rays for a given camera configuration.
+
+  Args:
+    H: Image height.
+    W: Image width.
+    focal: Focal length.
+    c2w: Camera-to-world transformation matrix (4x4).
+
+  Returns:
+    rays_o: Ray origins (H*W, 3).
+    rays_d: Ray directions (H*W, 3).
+  """
+  device = c2w.device
+  focal = torch.from_numpy(focal).to(device)
+
+  i, j = torch.meshgrid(
+      torch.arange(W, dtype=torch.float32, device=device),
+      torch.arange(H, dtype=torch.float32, device=device),
+      indexing='xy'
+  )
+  dirs = torch.stack(
+      [(i - W * .5) / focal, -(j - H * .5) / focal, -torch.ones_like(i, device = device)], -1
+  )
+
+  rays_d = torch.sum(dirs[..., None, :] * c2w[:3, :3], -1)
+  rays_d = rays_d.view(-1, 3)
+  rays_o = c2w[:3, -1].expand(rays_d.shape)
+
+  return rays_o, rays_d
+
+def render_rays(network_fn, rays_o, rays_d, near, far, N_samples, device, rand=False, embed_fn=None, chunk=1024*4):
+    def batchify(fn, chunk):
+        return lambda inputs: torch.cat([fn(inputs[i:i+chunk]) for i in range(0, inputs.shape[0], chunk)], 0)
+
+    z_vals = torch.linspace(near, far, steps=N_samples, device=device)
+
+    if rand:
+        z_vals += torch.rand(*z_vals.shape[:-1], N_samples, device=rays_o.device) * (far - near) / N_samples
+
+    pts = rays_o[...,None,:] + rays_d[...,None,:] * z_vals[...,:,None]
+
+    view_dirs = rays_d / torch.norm(rays_d, dim=-1, keepdim=True)
+    view_dirs = view_dirs[..., None, :].expand(pts.shape)
+
+    input_pts = torch.cat((pts, view_dirs), dim=-1)
+    raw = batchify(network_fn, chunk)(input_pts)
+
+    sigma_a = raw[...,0]
+    rgb = raw[...,1:]
+
+    dists = z_vals[..., 1:] - z_vals[..., :-1]
+    dists = torch.cat([dists, torch.tensor([1e10], device=device)], -1)
+
+    alpha = 1. - torch.exp(-sigma_a * dists)
+    alpha = alpha.unsqueeze(-1)
+
+    ones_shape = (alpha.shape[0], 1, 1)
+    T = torch.cumprod(
+        torch.cat([
+            torch.ones(ones_shape, device=device),
+            1. - alpha + 1e-10
+        ], dim=1),
+        dim=1
+    )[:, :-1]
+
+    weights = alpha * T
+
+    rgb_map = torch.sum(weights * rgb, dim=1)
+    depth_map = torch.sum(weights.squeeze(-1) * z_vals, dim=-1)
+    acc_map = torch.sum(weights.squeeze(-1), dim=-1)
+
+    return rgb_map, depth_map, acc_map</code></pre>
+
+            <h2>Training</h2>
+            <p>Finally, we proceed to the training loop. We can calculate a loss function because volume rendering is fully differentiable; it is constructed entirely from smooth, continuous mathematical operations (addition, multiplication, exponentials), which allows gradients to propagate via the chain rule.</p>
+            
+            <p>NeRF uses the Mean Squared Error (MSE) loss:</p>
+            <p>$$\text{MSE} = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2$$</p>
+
+            <p>In this context, the <strong>ground truth</strong> (\(y\)) is an actual image sampled randomly from our dataset. The <strong>predicted</strong> value (\(\hat{y}\)) is the image generated by the NeRF model. This prediction is obtained by taking the camera location, image dimensions, and focal length, passing them through the ray generation process, and then feeding those rays into the volume rendering function.</p>
+            
+            <p>Essentially, the goal is to minimize the difference between the rendered volume and the real photograph.</p>
+
+            <span class="code-caption">Training loop</span>
+<pre><code class="language-python">def train(images,poses,H,W,focal,testpose,testimg,device):
+
+    print(f"Using device: {device}")
+    model = NeRF().to(device)
+
+    criterion = nn.MSELoss(reduction='mean')
+    optimizer = torch.optim.Adam(model.parameters(),lr=5e-4)
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.99)
+
+    n_iter = 1000
+    n_samples = 64
+    i_plot = 50
+    psnrs = []
+    iternums = []
+    t = time.time()
+
+    images_tensor = torch.from_numpy(images).float().to(device)
+    poses_tensor = torch.from_numpy(poses).float().to(device)
+
+    for i in range(n_iter):
+
+        img_i = np.random.randint(images.shape[0])
+
+        target = images_tensor[img_i]
+        pose = poses_tensor[img_i]
+
+        rays_o, rays_d = get_rays(H, W, focal, pose)
+
+        optimizer.zero_grad()
+
+        rgb, depth, acc = render_rays(model, rays_o, rays_d, near=2., far=6., N_samples=n_samples, device=device, rand=True)
+
+        rgb = rgb.reshape(H,W,3)
+
+        loss = criterion(rgb, target)
+
+        loss.backward()
+        optimizer.step()</code></pre>
+
+            <h2>Results</h2>
+            
+            <figure>
+                <img src="training_step_0.png" alt="Training: Iteration 0">
+                <figcaption>Figure 5: Training: Iteration 0</figcaption>
+            </figure>
+
+            <figure>
+                <img src="training_step_250.png" alt="Training: Iteration 250">
+                <figcaption>Figure 6: Training: Iteration 250</figcaption>
+            </figure>
+
+            <figure>
+                <img src="training_step_600.png" alt="Training: Iteration 600">
+                <figcaption>Figure 7: Training: Iteration 600</figcaption>
+            </figure>
+
+            <figure>
+                <img src="training_step_950.png" alt="Training: Iteration 950">
+                <figcaption>Figure 8: Training: Iteration 950</figcaption>
+            </figure>
+
+        </article>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
